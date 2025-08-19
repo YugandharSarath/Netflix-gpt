@@ -1,13 +1,15 @@
 import { useSelector } from "react-redux";
-import VideoBackground from "./VideoBackground";
-import VideoTitle from "./VideoTitle";
+import { VideoTitle } from "./VideoTitle";
+import { VideoBackground } from "./VideoBackground";
+import Shimmer from "./Shimmer";
 
-const MainContainer = () => {
+export const MainContainer = () => {
   const movies = useSelector((store) => store.movies?.nowPlayingMovies);
-
-  if (!movies) return;
+  // console.log("🎬 From store.movies.nowPlayingMovies:", movies);
+  if (!movies) return <Shimmer/>;
 
   const mainMovie = movies[0];
+//   console.log(mainMovie);
 
   const { original_title, overview, id } = mainMovie;
 
@@ -18,4 +20,3 @@ const MainContainer = () => {
     </div>
   );
 };
-export default MainContainer;

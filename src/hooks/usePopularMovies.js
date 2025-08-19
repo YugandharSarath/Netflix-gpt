@@ -1,23 +1,24 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { API_OPTIONS } from "../utils/constants";
+import { useDispatch, useSelector } from "react-redux";
 import { addPopularMovies } from "../utils/moviesSlice";
 
 const usePopularMovies = () => {
-  // Fetch Data from TMDB API and update store
+  // Fetch data from TMDB API and update store
   const dispatch = useDispatch();
+
+  const popularMovies = useSelector((store) => store.movies.popularMovies);
 
   const getPopularMovies = async () => {
     const data = await fetch(
-      "https://api.themoviedb.org/3/movie/popular?page=1",
-      API_OPTIONS
+      "https://tmdb-proxy-server-w1ng.onrender.com/popular"
     );
-    const json = await data.json();
-    dispatch(addPopularMovies(json.results));
+    const res = await data.json();
+
+    dispatch(addPopularMovies(res.results));
   };
 
   useEffect(() => {
-    getPopularMovies();
+    !popularMovies && getPopularMovies();
   }, []);
 };
 
